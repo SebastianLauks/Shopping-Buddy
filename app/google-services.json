@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "709361152640",
+    "firebase_url": "https://shoppinglist-83e7f.firebaseio.com",
+    "project_id": "shoppinglist-83e7f",
+    "storage_bucket": "shoppinglist-83e7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709361152640:android:d98355a6709b8554822c65",
+        "android_client_info": {
+          "package_name": "lauks.sebastian.shoppingbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709361152640-ojhleglad6cr0itbdoe9fr452kunoafb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lauks.sebastian.shoppingbuddy",
+            "certificate_hash": "1985793178e896be2ab99c0bce71787a63cc5af5"
+          }
+        },
+        {
+          "client_id": "709361152640-devhvef2ni4bcqi1t0cnh3lvk0r1ds7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALW68n2rroMl1aEDmXQ0qbai94nTlG59M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "709361152640-devhvef2ni4bcqi1t0cnh3lvk0r1ds7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
