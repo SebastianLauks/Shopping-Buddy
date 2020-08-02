@@ -7,12 +7,27 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
-    <Button
-        android:id="@+id/bt_add"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dodaj" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_new_products"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="@string/et_new_product" />
+
+        <Button
+            android:id="@+id/bt_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Dodaj" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/main_recycler_view"

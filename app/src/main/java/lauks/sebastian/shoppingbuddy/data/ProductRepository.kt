@@ -8,6 +8,10 @@ class ProductRepository private constructor(private val productDao: ProductDao) 
 
     fun getProducts() = productDao.getProducts()
 
+    fun removeProduct(product: Product) {
+        productDao.removeProduct(product)
+    }
+
     companion object {
         @Volatile private var instance: ProductRepository? = null
 

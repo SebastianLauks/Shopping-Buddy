@@ -18,7 +18,7 @@ class ProductDao {
 
     init {
         products.value = productList
-        database = Firebase.database.reference
+        database = Firebase.database.reference.child("Products")
 
         val productsListener = object: ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
@@ -36,16 +36,18 @@ class ProductDao {
 
         }
 
-        database.child("Products").addValueEventListener(productsListener)
+        database.addValueEventListener(productsListener)
     }
 
     fun addProduct(product: Product){
 //        productList.add(product)
 //        products.value = productList
-        database.child("Products").child(product.id).setValue(product)
+        database.child(product.id).setValue(product)
     }
 
-
+    fun removeProduct(product: Product){
+        database.child(product.id).removeValue()
+    }
 
     fun getProducts() = products as LiveData<List<Product>>
 }
