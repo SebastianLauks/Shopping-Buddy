@@ -12,7 +12,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class ProductDao {
-    private lateinit var database: DatabaseReference
+    private var database: DatabaseReference
     private val productList = mutableListOf<Product>()
     private val products = MutableLiveData<List<Product>>()
 

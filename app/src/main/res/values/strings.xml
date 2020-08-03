@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ShoppingBuddy</string>
     <string name="et_new_product">Produkt</string>
+    <string name="text_empty_product">Produkt nie może mieć pustej nazwy.</string>
+    <string name="text_product_successfull_remove">Produkt został usunięty.</string>
+    <string name="text_product_unsuccessfull_remove">Wystąpił błąd podczas usuwania produktu.</string>
 </resources>
