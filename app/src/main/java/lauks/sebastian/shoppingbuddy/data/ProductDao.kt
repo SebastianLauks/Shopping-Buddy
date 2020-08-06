@@ -32,7 +32,11 @@ class ProductDao {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 productsList.clear()
-                getProductsFromFB(snapshot)
+                snapshot.children.forEach{productRef: DataSnapshot ->
+                    val productReference = productRef.value as HashMap<String,*>
+                    productsList.add(Product(productReference["id"].toString(),productReference["name"].toString(), productReference["inCart"].toString().toBoolean()))
+                }
+                productsLiveData.value = productsList
             }
 
         }
@@ -40,23 +44,23 @@ class ProductDao {
         shoppingListProductsInFB.addValueEventListener(productsListener)
     }
 
-    private fun getProductsFromFB(outsideSnapshot: DataSnapshot){
-        productsInFB.addListenerForSingleValueEvent(object :ValueEventListener{
-            override fun onCancelled(error: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                allProducts.clear()
-                snapshot.children.forEach { product:DataSnapshot ->
-                    val productMap = product.value as HashMap<String, *>
-                    allProducts.add(Product(productMap["id"]!!.toString(), productMap["name"]!!.toString()))
-                }
-                continueProductsRetrieving(outsideSnapshot)
-            }
-
-        })
-    }
+//    private fun getProductsFromFB(outsideSnapshot: DataSnapshot){
+//        productsInFB.addListenerForSingleValueEvent(object :ValueEventListener{
+//            override fun onCancelled(error: DatabaseError) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                allProducts.clear()
+//                snapshot.children.forEach { product:DataSnapshot ->
+//                    val productMap = product.value as HashMap<String, *>
+//                    allProducts.add(Product(productMap["id"]!!.toString(), productMap["name"]!!.toString()))
+//                }
+//                continueProductsRetrieving(outsideSnapshot)
+//            }
+//
+//        })
+//    }
 
     private fun removeProductFromFB(product: Product){
         shoppingListProductsInFB.addListenerForSingleValueEvent(object: ValueEventListener{
@@ -75,30 +79,25 @@ class ProductDao {
 
         })
     }
-    fun continueProductsRetrieving(snapshot: DataSnapshot){
-        snapshot.children.forEach{productRef: DataSnapshot ->
-            val productReference = productRef.value as HashMap<String,*>
-            Log.d("prodref", productReference["id"].toString())
-            Log.d("siezeee",allProducts.size.toString())
-            val productToAdd = allProducts.find{product ->
-                product.id == productReference["id"].toString()
-            }
-            if(productToAdd != null){
-                Log.d("niejenulem", "niejenulem")
-                productToAdd.inCart = productReference["inCart"].toString().toBoolean()
-                productsList.add(productToAdd)
-            }
-        }
-        Log.d("tag", productsList.size.toString())
-        productsLiveData.value = productsList
+    private fun tryAddProduct(product: Product){
+
     }
     fun addProduct(product: Product){
-//        productsList.add(product)
-//        productsLiveData.value = productsList
-        val pushedRef = shoppingListProductsInFB.push()
-        val pushedId = pushedRef.key
-        product.id = pushedId!!
-        shoppingListProductsInFB.child(product.id).setValue(product)
+        shoppingListProductsInFB.orderByChild("name").equalTo(product.name).addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.value==null){
+                    val pushedRef = shoppingListProductsInFB.push()
+                    val pushedId = pushedRef.key
+                    product.id = pushedId!!
+                    shoppingListProductsInFB.child(product.id).setValue(product)
+                }
+            }
+
+        })
     }
 
     fun removeProduct(product: Product){
