@@ -1,6 +1,5 @@
-package lauks.sebastian.shoppingbuddy.ui
+package lauks.sebastian.shoppingbuddy.ui.products
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import lauks.sebastian.shoppingbuddy.data.Product
 import lauks.sebastian.shoppingbuddy.data.ProductRepository

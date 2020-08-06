@@ -1,4 +1,4 @@
-package lauks.sebastian.shoppingbuddy.ui
+package lauks.sebastian.shoppingbuddy.ui.products
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

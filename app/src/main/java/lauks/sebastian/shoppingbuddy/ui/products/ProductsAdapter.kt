@@ -1,10 +1,9 @@
-package lauks.sebastian.shoppingbuddy.ui
+package lauks.sebastian.shoppingbuddy.ui.products
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.product_item.view.*
@@ -15,7 +14,8 @@ class ProductsAdapter(private val productsList: LiveData<List<Product>>, private
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.product_item, parent, false)
-        val holder = ProductsViewHolder(itemView)
+        val holder =
+            ProductsViewHolder(itemView)
         holder.itemView.setOnLongClickListener {
             if(holder.adapterPosition != RecyclerView.NO_POSITION){
                 onProductLongClicked.invoke(productsList.value!![holder.adapterPosition].name)
