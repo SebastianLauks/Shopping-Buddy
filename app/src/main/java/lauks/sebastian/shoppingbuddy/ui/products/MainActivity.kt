@@ -1,8 +1,13 @@
 package lauks.sebastian.shoppingbuddy.ui.products
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import lauks.sebastian.shoppingbuddy.R
@@ -24,7 +29,12 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = adapter
         viewPager.isUserInputEnabled = false // disable swiping between tabs
 
-
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                hideKeyboard()
+            }
+        })
 
         val tabLayout = tabs
         TabLayoutMediator(tabLayout, viewPager){tab, position ->
@@ -32,6 +42,16 @@ class MainActivity : AppCompatActivity() {
         }.attach()
     }
 
+    fun AppCompatActivity.hideKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        // else {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        // }
+    }
 
         fun createCustomDialog(message: String, yes: String, no:String, yesFunction: () -> Unit){
             val builder = AlertDialog.Builder(this)
