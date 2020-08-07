@@ -1,23 +1,33 @@
 package lauks.sebastian.shoppingbuddy.data
 
-class ProductRepository private constructor(private val productDao: ProductDao) {
+class ProductRepository private constructor(private val productsInShoppingListDao: ProductsInShoppingListDao) {
 
     fun addProduct(product: Product){
-        productDao.addProduct(product)
+        productsInShoppingListDao.addProduct(product)
     }
 
-    fun getProducts() = productDao.getProducts()
+    fun getProductsToBuy() = productsInShoppingListDao.getProductsToBuy()
+
+    fun getProductsInCart() = productsInShoppingListDao.getProductsInCart()
 
     fun removeProduct(product: Product) {
-        productDao.removeProduct(product)
+        productsInShoppingListDao.removeProduct(product)
+    }
+
+    fun moveProductsToCart(product: Product){
+        productsInShoppingListDao.moveProductsToCart(product)
+    }
+
+    fun moveProductsFromCart(product: Product){
+        productsInShoppingListDao.moveProductsFromCart(product)
     }
 
     companion object {
         @Volatile private var instance: ProductRepository? = null
 
-        fun getInstance(productDao: ProductDao) =
+        fun getInstance(productsInShoppingListDao: ProductsInShoppingListDao) =
             instance ?: synchronized(this){
-                instance ?: ProductRepository(productDao).also { instance = it }
+                instance ?: ProductRepository(productsInShoppingListDao).also { instance = it }
             }
     }
 }

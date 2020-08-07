@@ -2,7 +2,7 @@ package lauks.sebastian.shoppingbuddy.data
 
 class Database private constructor(){
 
-    val productDao = ProductDao()
+    val productDao = ProductsInShoppingListDao()
 
 
     companion object {

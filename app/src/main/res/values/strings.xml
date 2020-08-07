@@ -5,9 +5,8 @@
     <string name="text_product_successfull_remove">Produkt został usunięty.</string>
     <string name="text_product_unsuccessfull_remove">Wystąpił błąd podczas usuwania produktu.</string>
     <string name="bt_add_new_product">Dodaj</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_product_successfull_move_to_cart">Produkt dodany do koszyka.</string>
+    <string name="text_product_unsuccessfull_move_to_cart">Wystąpił błąd podczas dodawania produktu do koszyka.</string>
 
 
 </resources>

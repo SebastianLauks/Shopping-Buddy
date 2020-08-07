@@ -8,13 +8,24 @@ class ProductsViewModel(private val productRepository: ProductRepository): ViewM
 
 
 
-    fun getProducts() = productRepository.getProducts()
+    fun getProductsToBuy() = productRepository.getProductsToBuy()
+
+    fun getProductsInCart() = productRepository.getProductsInCart()
 
     fun addProduct(product: Product) = productRepository.addProduct(product)
 
     fun removeProduct(product: Product) = productRepository.removeProduct(product)
 
-    fun findProductByName(name: String): Product? {
-        return getProducts().value!!.find { product -> product.name.equals(name)}
+    fun moveProductsToCart(product: Product) = productRepository.moveProductsToCart(product)
+
+    fun moveProductsFromCart(product: Product) = productRepository.moveProductsFromCart(product)
+
+    fun findProductToBuy(name: String): Product? {
+        return getProductsToBuy().value!!.find { product -> product.name == name }
     }
+
+    fun findProductInCart(name: String): Product? {
+        return getProductsInCart().value!!.find { product -> product.name == name }
+    }
+
 }

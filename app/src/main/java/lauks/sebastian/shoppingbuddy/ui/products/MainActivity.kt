@@ -1,17 +1,12 @@
 package lauks.sebastian.shoppingbuddy.ui.products
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import lauks.sebastian.shoppingbuddy.R
-import lauks.sebastian.shoppingbuddy.data.Product
-import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
+import lauks.sebastian.shoppingbuddy.ui.products.products_incart.ProductsInCartFragment
+import lauks.sebastian.shoppingbuddy.ui.products.products_tobuy.ProductsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = ProductsViewPagerAdapter(this)
         adapter.addFragment(ProductsFragment.newInstance())
-        adapter.addFragment(ProductsShoppingCartFragment.newInstance())
+        adapter.addFragment(ProductsInCartFragment.newInstance())
         viewPager.adapter = adapter
 
 

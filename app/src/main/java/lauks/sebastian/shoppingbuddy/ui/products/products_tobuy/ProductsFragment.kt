@@ -1,15 +1,15 @@
-package lauks.sebastian.shoppingbuddy.ui.products
+package lauks.sebastian.shoppingbuddy.ui.products.products_tobuy
 
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_products.*
 
 import lauks.sebastian.shoppingbuddy.R
 import lauks.sebastian.shoppingbuddy.data.Product
+import lauks.sebastian.shoppingbuddy.ui.products.ProductsViewModel
 import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
 
 
@@ -77,7 +78,7 @@ class ProductsFragment : Fragment() {
     private fun initUi(){
         //needed to handle long click on products (in order to remove it)
         val onProductLongClicked: (name: String) -> Unit = {name ->
-            val product: Product? = viewModel.findProductByName(name)
+            val product: Product? = viewModel.findProductToBuy(name)
             if(product != null){
                 viewModel.removeProduct(product)
                 Toast.makeText(activity?.applicationContext, R.string.text_product_successfull_remove, Toast.LENGTH_LONG).show()
@@ -91,14 +92,15 @@ class ProductsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory)
             .get(ProductsViewModel::class.java)
 
-        products_recycler_view.adapter = ProductsAdapter(
-            viewModel.getProducts(),
-            onProductLongClicked
-        )
+        products_recycler_view.adapter =
+            ProductsAdapter(
+                viewModel.getProductsToBuy(),
+                onProductLongClicked
+            )
         products_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext)
         products_recycler_view.setHasFixedSize(true)
 
-        viewModel.getProducts().observe(activity as LifecycleOwner, Observer { products ->
+        viewModel.getProductsToBuy().observe(activity as LifecycleOwner, Observer { products ->
             (products_recycler_view.adapter as ProductsAdapter).notifyDataSetChanged()
         })
 

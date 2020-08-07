@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.products.ProductsFragment">
+    tools:context=".ui.products.products_tobuy.ProductsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
