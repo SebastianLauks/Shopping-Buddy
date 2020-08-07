@@ -88,40 +88,27 @@ class ProductsInShoppingListDao {
 
             })
     }
+    fun moveProductsToCartLocally(product: Product){
+
+        productsToBuyList.remove(product)
+        productsToBuyLiveData.value = productsToBuyList
+    }
 
     fun moveProductsToCart(product: Product){
         product.inCart = true
         shoppingListProductsInFB.child(product.id).setValue(product)
-//        shoppingListProductsInFB.orderByChild("name").equalTo(product.name)
-//            .addListenerForSingleValueEvent(object : ValueEventListener{
-//                override fun onCancelled(error: DatabaseError) {
-//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//                }
-//
-//                override fun onDataChange(products: DataSnapshot) {
-//                    val productToMove = products.value as HashMap<*, *>
-//                    shoppingListProductsInFB.child( productToMove.keys.first().toString()).child("inCard").setValue(true)
-//                }
-//
-//            })
+    }
+
+    fun moveProductsFromCartLocally(product: Product){
+        productsInCartList.remove(product)
+        productsInCartLiveData.value = productsInCartList
     }
 
     fun moveProductsFromCart(product: Product){
+        productsToBuyList.remove(product)
+        productsToBuyLiveData.value = productsToBuyList
         product.inCart = false
         shoppingListProductsInFB.child(product.id).setValue(product)
-
-//        shoppingListProductsInFB.orderByChild("name").equalTo(product.name)
-//            .addListenerForSingleValueEvent(object : ValueEventListener{
-//                override fun onCancelled(error: DatabaseError) {
-//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//                }
-//
-//                override fun onDataChange(products: DataSnapshot) {
-//                    val productToMove = products.value as HashMap<*, *>
-//                    shoppingListProductsInFB.child( productToMove.keys.first().toString()).child("inCard").setValue(false)
-//                }
-//
-//            })
     }
 
     fun getProductsToBuy() = productsToBuyLiveData as LiveData<List<Product>>

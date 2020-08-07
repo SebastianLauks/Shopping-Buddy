@@ -18,8 +18,16 @@ class ProductRepository private constructor(private val productsInShoppingListDa
         productsInShoppingListDao.moveProductsToCart(product)
     }
 
+    fun moveProductsToCartLocally(product: Product){
+        productsInShoppingListDao.moveProductsToCartLocally(product)
+    }
+
     fun moveProductsFromCart(product: Product){
         productsInShoppingListDao.moveProductsFromCart(product)
+    }
+
+    fun moveProductsFromCartLocally(product: Product){
+        productsInShoppingListDao.moveProductsFromCartLocally(product)
     }
 
     companion object {

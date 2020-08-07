@@ -10,7 +10,6 @@ import lauks.sebastian.shoppingbuddy.ui.products.products_tobuy.ProductsFragment
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: ProductsViewModel
     val TABS_TITLES = listOf("Lista", "Koszyk")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         adapter.addFragment(ProductsFragment.newInstance())
         adapter.addFragment(ProductsInCartFragment.newInstance())
         viewPager.adapter = adapter
+        viewPager.isUserInputEnabled = false // disable swiping between tabs
+
 
 
         val tabLayout = tabs

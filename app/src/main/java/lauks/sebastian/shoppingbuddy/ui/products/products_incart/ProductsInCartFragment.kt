@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_products.*
 import kotlinx.android.synthetic.main.fragment_products_in_cart.*
 
@@ -61,8 +63,28 @@ class ProductsInCartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
+        configureOnSwipe()
     }
 
+
+    fun configureOnSwipe(){
+        val myCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val product = viewModel.getProductsInCart().value!![viewHolder.adapterPosition]
+                viewModel.moveProductsFromCartLocally(product)
+                products_in_cart_recycler_view.adapter!!.notifyDataSetChanged()
+                viewModel.moveProductsFromCart(product)
+
+            }
+        }
+        ItemTouchHelper(myCallback).attachToRecyclerView(products_in_cart_recycler_view)
+    }
     // TODO: Rename method, update argument and hook method into UI event
 //    fun onButtonPressed(uri: Uri) {
 //        listener?.onFragmentInteraction(uri)
@@ -103,11 +125,11 @@ class ProductsInCartFragment : Fragment() {
         val onProductLongClicked: (name: String) -> Unit = {name ->
             val product: Product? = viewModel.findProductInCart(name)
             if(product != null){
-                viewModel.moveProductsFromCart(product)
-                Toast.makeText(activity?.applicationContext, R.string.text_product_successfull_move_to_cart, Toast.LENGTH_LONG).show()
+                viewModel.removeProduct(product)
+                Toast.makeText(activity?.applicationContext, R.string.text_product_successfull_remove, Toast.LENGTH_LONG).show()
             }
             else{
-                Toast.makeText( activity?.applicationContext, R.string.text_product_unsuccessfull_move_to_cart, Toast.LENGTH_LONG).show()
+                Toast.makeText( activity?.applicationContext, R.string.text_product_unsuccessfull_remove, Toast.LENGTH_LONG).show()
             }
         }
 

@@ -13,7 +13,9 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_products.*
 
 import lauks.sebastian.shoppingbuddy.R
@@ -42,6 +44,9 @@ class ProductsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_products, container, false)
     }
@@ -49,6 +54,27 @@ class ProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
+
+        configureOnSwipe()
+
+    }
+
+    fun configureOnSwipe(){
+        val myCallback = object : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val product = viewModel.getProductsToBuy().value!![viewHolder.adapterPosition]
+                viewModel.moveProductsToCartLocally(product)
+                products_recycler_view.adapter!!.notifyDataSetChanged()
+                viewModel.moveProductsToCart(product)
+            }
+        }
+        ItemTouchHelper(myCallback).attachToRecyclerView(products_recycler_view)
     }
 
 //    fun onButtonPressed(uri: Uri) {
