@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.marginBottom
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_products_in_cart.*
 
 import lauks.sebastian.shoppingbuddy.R
 import lauks.sebastian.shoppingbuddy.data.Product
+import lauks.sebastian.shoppingbuddy.ui.products.MainActivity
 import lauks.sebastian.shoppingbuddy.ui.products.ProductsViewModel
 import lauks.sebastian.shoppingbuddy.ui.products.products_tobuy.ProductsAdapter
 import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
@@ -56,16 +59,26 @@ class ProductsInCartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_products_in_cart, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        setInLayoutViewsPositionsDynamicaly()
         initUi()
         configureOnSwipe()
     }
 
+    fun setInLayoutViewsPositionsDynamicaly(){
+        val param = products_in_cart_recycler_view.layoutParams as ViewGroup.MarginLayoutParams
+        param.bottomMargin = bt_remove_all_products_in_cart.height
+        products_in_cart_recycler_view.layoutParams = param
+    }
 
     fun configureOnSwipe(){
         val myCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
@@ -123,14 +136,17 @@ class ProductsInCartFragment : Fragment() {
     private fun initUi(){
         //needed to handle long click on products (in order to remove it)
         val onProductLongClicked: (name: String) -> Unit = {name ->
-            val product: Product? = viewModel.findProductInCart(name)
-            if(product != null){
-                viewModel.removeProduct(product)
-                Toast.makeText(activity?.applicationContext, R.string.text_product_successfull_remove, Toast.LENGTH_LONG).show()
+            (activity as MainActivity).createCustomDialog("Czy na pewno chcesz usunąć $name z listy?", "Tak", "Nie"){
+                val product: Product? = viewModel.findProductInCart(name)
+                if(product != null){
+                    viewModel.removeProduct(product)
+                    Toast.makeText(activity?.applicationContext, R.string.text_product_successfull_remove, Toast.LENGTH_LONG).show()
+                }
+                else{
+                    Toast.makeText( activity?.applicationContext, R.string.text_product_unsuccessfull_remove, Toast.LENGTH_LONG).show()
+                }
             }
-            else{
-                Toast.makeText( activity?.applicationContext, R.string.text_product_unsuccessfull_remove, Toast.LENGTH_LONG).show()
-            }
+
         }
 
         val factory = InjectorUtils.proviceProductsViewModelFactory()
@@ -149,8 +165,18 @@ class ProductsInCartFragment : Fragment() {
             (products_in_cart_recycler_view.adapter as ProductsInCartAdapter).notifyDataSetChanged()
         })
 
-
+        bt_remove_all_products_in_cart.setOnClickListener {
+            if (viewModel.getProductsInCart().value!!.isNotEmpty()) {
+                (activity as MainActivity).createCustomDialog(
+                    "Czy na pewno chcesz usunąć wszystkie przedmioty z listy?",
+                    "Tak",
+                    "Nie"
+                ) { viewModel.removeProductsFromInCart() }
+            }
+        }
     }
+
+
 
     companion object {
         /**

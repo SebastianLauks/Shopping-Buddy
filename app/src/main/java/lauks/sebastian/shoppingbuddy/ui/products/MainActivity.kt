@@ -1,6 +1,7 @@
 package lauks.sebastian.shoppingbuddy.ui.products
 
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
@@ -30,5 +31,31 @@ class MainActivity : AppCompatActivity() {
             tab.text = TABS_TITLES[position]
         }.attach()
     }
+
+
+        fun createCustomDialog(message: String, yes: String, no:String, yesFunction: () -> Unit){
+            val builder = AlertDialog.Builder(this)
+
+            // Set the alert dialog title
+//            builder.setTitle("Usun wszystkie przedmioty")
+
+            // Display a message on alert dialog
+            builder.setMessage(message)
+
+            // Set a positive button and its click listener on alert dialog
+            builder.setPositiveButton(yes){ _, _ ->
+                yesFunction()
+            }
+
+
+            // Display a negative button on alert dialog
+            builder.setNegativeButton(no){ _, _ ->
+            }
+
+            builder.create().show()
+        }
+
+
+
 
 }

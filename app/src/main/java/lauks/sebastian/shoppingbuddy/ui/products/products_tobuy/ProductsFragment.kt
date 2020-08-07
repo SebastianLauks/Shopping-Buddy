@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_products.*
 
 import lauks.sebastian.shoppingbuddy.R
 import lauks.sebastian.shoppingbuddy.data.Product
+import lauks.sebastian.shoppingbuddy.ui.products.MainActivity
 import lauks.sebastian.shoppingbuddy.ui.products.ProductsViewModel
 import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
 
@@ -104,13 +105,22 @@ class ProductsFragment : Fragment() {
     private fun initUi(){
         //needed to handle long click on products (in order to remove it)
         val onProductLongClicked: (name: String) -> Unit = {name ->
-            val product: Product? = viewModel.findProductToBuy(name)
-            if(product != null){
-                viewModel.removeProduct(product)
-                Toast.makeText(activity?.applicationContext, R.string.text_product_successfull_remove, Toast.LENGTH_LONG).show()
-            }
-            else{
-                Toast.makeText( activity?.applicationContext, R.string.text_product_unsuccessfull_remove, Toast.LENGTH_LONG).show()
+            (activity as MainActivity).createCustomDialog("Czy na pewno chcesz usunąć $name z listy?", "Tak", "Nie") {
+                val product: Product? = viewModel.findProductToBuy(name)
+                if (product != null) {
+                    viewModel.removeProduct(product)
+                    Toast.makeText(
+                        activity?.applicationContext,
+                        R.string.text_product_successfull_remove,
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        activity?.applicationContext,
+                        R.string.text_product_unsuccessfull_remove,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
 
@@ -149,7 +159,7 @@ class ProductsFragment : Fragment() {
             et_new_products.setText("")
             viewModel.addProduct(product)
         }else{
-            Toast.makeText(activity?.applicationContext, R.string.text_empty_product, Toast.LENGTH_LONG).show()
+            Toast.makeText(activity?.applicationContext, R.string.text_empty_product, Toast.LENGTH_SHORT).show()
         }
     }
     companion object {

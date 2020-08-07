@@ -18,11 +18,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:layout_margin="5dp"
             android:inputType="textPersonName"
             android:hint="@string/et_new_product" />
 
         <Button
             android:id="@+id/bt_add"
+            android:layout_margin="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

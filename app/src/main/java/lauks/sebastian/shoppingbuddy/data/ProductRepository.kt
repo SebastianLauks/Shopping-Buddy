@@ -30,6 +30,10 @@ class ProductRepository private constructor(private val productsInShoppingListDa
         productsInShoppingListDao.moveProductsFromCartLocally(product)
     }
 
+    fun removeProductsFromInCart(){
+        productsInShoppingListDao.removeProductsFromInCart()
+    }
+
     companion object {
         @Volatile private var instance: ProductRepository? = null
 

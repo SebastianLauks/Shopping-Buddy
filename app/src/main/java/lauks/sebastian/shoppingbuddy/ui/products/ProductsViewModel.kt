@@ -24,6 +24,8 @@ class ProductsViewModel(private val productRepository: ProductRepository): ViewM
 
     fun moveProductsFromCartLocally(product: Product) = productRepository.moveProductsFromCartLocally(product)
 
+    fun removeProductsFromInCart() = productRepository.removeProductsFromInCart()
+
     fun findProductToBuy(name: String): Product? {
         return getProductsToBuy().value!!.find { product -> product.name == name }
     }

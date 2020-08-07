@@ -55,6 +55,10 @@ class ProductsInShoppingListDao {
         })
     }
 
+    fun removeProductsFromInCart(){
+        productsInCartList.filter { it.inCart }.forEach { removeProduct(it) }
+    }
+
     fun addProduct(product: Product) {
         shoppingListProductsInFB.orderByChild("name").equalTo(product.name)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -89,7 +93,6 @@ class ProductsInShoppingListDao {
             })
     }
     fun moveProductsToCartLocally(product: Product){
-
         productsToBuyList.remove(product)
         productsToBuyLiveData.value = productsToBuyList
     }
