@@ -1,8 +1,12 @@
 package lauks.sebastian.shoppingbuddy.data
 
+import lauks.sebastian.shoppingbuddy.data.products.ProductsDao
+import lauks.sebastian.shoppingbuddy.data.shopping_lists.ShoppingListsDao
+
 class Database private constructor(){
 
-    val productDao = ProductsInShoppingListDao()
+    val productDao = ProductsDao()
+    val shoppingListsDao = ShoppingListsDao()
 
 
     companion object {

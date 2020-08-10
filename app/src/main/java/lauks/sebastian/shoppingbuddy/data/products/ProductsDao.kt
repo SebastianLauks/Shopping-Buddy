@@ -1,4 +1,4 @@
-package lauks.sebastian.shoppingbuddy.data
+package lauks.sebastian.shoppingbuddy.data.products
 
 
 import androidx.lifecycle.LiveData
@@ -10,16 +10,17 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class ProductsInShoppingListDao {
-    private val shoppingListProductsInFB: DatabaseReference
+class ProductsDao {
+    private lateinit var shoppingListProductsInFB: DatabaseReference
     private val productsToBuyList = mutableListOf<Product>()
     private val productsToBuyLiveData = MutableLiveData<List<Product>>()
     private val productsInCartList = mutableListOf<Product>()
     private val productsInCartLiveData = MutableLiveData<List<Product>>()
 
-    private var shoppingListKey = "shoppinglist1" //in the future it will be passed as an argument
+//    private var shoppingListKey = "shoppinglist1" //in the future it will be passed as an argument
 
-    init {
+
+    fun startListening(shoppingListKey: String){
         productsToBuyLiveData.value = productsToBuyList
         productsInCartLiveData.value = productsInCartList
         shoppingListProductsInFB =

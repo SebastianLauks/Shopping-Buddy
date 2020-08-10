@@ -1,27 +1,34 @@
 package lauks.sebastian.shoppingbuddy.ui.products
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_products.*
 import lauks.sebastian.shoppingbuddy.R
 import lauks.sebastian.shoppingbuddy.ui.products.products_incart.ProductsInCartFragment
 import lauks.sebastian.shoppingbuddy.ui.products.products_tobuy.ProductsFragment
+import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
 
-class MainActivity : AppCompatActivity() {
+class ProductsActivity : AppCompatActivity() {
 
     val TABS_TITLES = listOf("Lista", "Koszyk")
-
+    lateinit var viewModel: ProductsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_products)
 
+
+        val factory = InjectorUtils.provideProductsViewModelFactory()
+        viewModel = ViewModelProvider(this, factory)
+            .get(ProductsViewModel::class.java)
+
+        viewModel.startListening(intent.getStringExtra("shoppingListId"))
 
         val adapter = ProductsViewPagerAdapter(this)
         adapter.addFragment(ProductsFragment.newInstance())

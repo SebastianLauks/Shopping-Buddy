@@ -7,24 +7,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.core.view.marginBottom
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_products.*
 import kotlinx.android.synthetic.main.fragment_products_in_cart.*
 
 import lauks.sebastian.shoppingbuddy.R
-import lauks.sebastian.shoppingbuddy.data.Product
-import lauks.sebastian.shoppingbuddy.ui.products.MainActivity
+import lauks.sebastian.shoppingbuddy.data.products.Product
+import lauks.sebastian.shoppingbuddy.ui.products.ProductsActivity
 import lauks.sebastian.shoppingbuddy.ui.products.ProductsViewModel
-import lauks.sebastian.shoppingbuddy.ui.products.products_tobuy.ProductsAdapter
 import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
 
 // TODO: Rename parameter arguments, choose names that match
@@ -136,7 +131,7 @@ class ProductsInCartFragment : Fragment() {
     private fun initUi(){
         //needed to handle long click on products (in order to remove it)
         val onProductLongClicked: (name: String) -> Unit = {name ->
-            (activity as MainActivity).createCustomDialog("Czy na pewno chcesz usunąć $name z listy?", "Tak", "Nie"){
+            (activity as ProductsActivity).createCustomDialog("Czy na pewno chcesz usunąć $name z listy?", "Tak", "Nie"){
                 val product: Product? = viewModel.findProductInCart(name)
                 if(product != null){
                     viewModel.removeProduct(product)
@@ -149,7 +144,7 @@ class ProductsInCartFragment : Fragment() {
 
         }
 
-        val factory = InjectorUtils.proviceProductsViewModelFactory()
+        val factory = InjectorUtils.provideProductsViewModelFactory()
         viewModel = ViewModelProvider(this, factory)
             .get(ProductsViewModel::class.java)
 
@@ -167,7 +162,7 @@ class ProductsInCartFragment : Fragment() {
 
         bt_remove_all_products_in_cart.setOnClickListener {
             if (viewModel.getProductsInCart().value!!.isNotEmpty()) {
-                (activity as MainActivity).createCustomDialog(
+                (activity as ProductsActivity).createCustomDialog(
                     "Czy na pewno chcesz usunąć wszystkie przedmioty z listy?",
                     "Tak",
                     "Nie"

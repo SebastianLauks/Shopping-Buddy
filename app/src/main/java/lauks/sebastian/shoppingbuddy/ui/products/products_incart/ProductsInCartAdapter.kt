@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.product_item.view.*
 import lauks.sebastian.shoppingbuddy.R
-import lauks.sebastian.shoppingbuddy.data.Product
+import lauks.sebastian.shoppingbuddy.data.products.Product
 
 class ProductsInCartAdapter(private val productsList: LiveData<List<Product>>, private val onProductLongClicked: (name: String) -> Unit): RecyclerView.Adapter<ProductsInCartAdapter.ProductsInCartViewHolder>(){
 

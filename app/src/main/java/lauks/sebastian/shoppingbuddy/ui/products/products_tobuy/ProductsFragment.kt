@@ -3,7 +3,6 @@ package lauks.sebastian.shoppingbuddy.ui.products.products_tobuy
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_products.*
 
 import lauks.sebastian.shoppingbuddy.R
-import lauks.sebastian.shoppingbuddy.data.Product
-import lauks.sebastian.shoppingbuddy.ui.products.MainActivity
+import lauks.sebastian.shoppingbuddy.data.products.Product
+import lauks.sebastian.shoppingbuddy.ui.products.ProductsActivity
 import lauks.sebastian.shoppingbuddy.ui.products.ProductsViewModel
 import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
 
@@ -105,7 +104,7 @@ class ProductsFragment : Fragment() {
     private fun initUi(){
         //needed to handle long click on products (in order to remove it)
         val onProductLongClicked: (name: String) -> Unit = {name ->
-            (activity as MainActivity).createCustomDialog("Czy na pewno chcesz usunąć $name z listy?", "Tak", "Nie") {
+            (activity as ProductsActivity).createCustomDialog("Czy na pewno chcesz usunąć $name z listy?", "Tak", "Nie") {
                 val product: Product? = viewModel.findProductToBuy(name)
                 if (product != null) {
                     viewModel.removeProduct(product)
@@ -124,9 +123,10 @@ class ProductsFragment : Fragment() {
             }
         }
 
-        val factory = InjectorUtils.proviceProductsViewModelFactory()
+        val factory = InjectorUtils.provideProductsViewModelFactory()
         viewModel = ViewModelProvider(this, factory)
             .get(ProductsViewModel::class.java)
+
 
         products_recycler_view.adapter =
             ProductsAdapter(
@@ -155,7 +155,10 @@ class ProductsFragment : Fragment() {
     fun tryToAddProduct(){
         if(et_new_products.text.toString() != "") {
             val product =
-                Product(et_new_products.text.toString(), et_new_products.text.toString())
+                Product(
+                    et_new_products.text.toString(),
+                    et_new_products.text.toString()
+                )
             et_new_products.setText("")
             viewModel.addProduct(product)
         }else{
