@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_shopping_lists.*
 import lauks.sebastian.shoppingbuddy.R
 import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
@@ -31,7 +32,7 @@ class ShoppingListsActivity : AppCompatActivity() {
             ShoppingistsAdapter(
                 viewModel.getShoppingLists()
             )
-        shopping_lists_recycler_view.layoutManager = GridLayoutManager(this,2)
+        shopping_lists_recycler_view.layoutManager = LinearLayoutManager(this)
         shopping_lists_recycler_view.setHasFixedSize(true)
 
         //Todo
