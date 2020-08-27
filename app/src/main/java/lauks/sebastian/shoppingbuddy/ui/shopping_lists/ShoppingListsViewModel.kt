@@ -18,4 +18,6 @@ class ShoppingListsViewModel(private val shoppingListsRepository: ShoppingListsR
 
     fun importShoppingList(code: String) = shoppingListsRepository.importShoppingList(code)
 
+    fun startListening(userId:String) = shoppingListsRepository.startListening(userId)
+
 }

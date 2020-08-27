@@ -13,15 +13,14 @@ import lauks.sebastian.shoppingbuddy.data.products.Product
 
 class ShoppingListsDao {
 
-    private val userShoppingListsFB: DatabaseReference
-    private val shoppingListsFB: DatabaseReference
+    private lateinit var userShoppingListsFB: DatabaseReference
+    private lateinit var shoppingListsFB: DatabaseReference
     private val shoppingListsList = mutableListOf<ShoppingList>()
     private val shoppingListsLiveData = MutableLiveData<List<ShoppingList>>()
 
-    private val userId = "user1"
+//    private val userId = "user1"
 
-
-    init {
+    fun startListening(userId: String){
         shoppingListsLiveData.value = shoppingListsList
         userShoppingListsFB =  Firebase.database.reference.child("Users").child(userId)
             .child("shoppingLists")
@@ -38,19 +37,34 @@ class ShoppingListsDao {
                 var itemsProcessed = 0
                 snapshot.children.forEach{ shoppingListSnapshot: DataSnapshot ->
                     val shoppingListId = shoppingListSnapshot.value as String
-                    shoppingListsFB.child(shoppingListId).child("name").addListenerForSingleValueEvent(object :ValueEventListener{
+                    shoppingListsFB.child(shoppingListId).addListenerForSingleValueEvent(object :ValueEventListener{
                         override fun onCancelled(error: DatabaseError) {
                             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                         }
 
                         override fun onDataChange(_snapshot: DataSnapshot) {
-                            val shoppingListName =  _snapshot.value.toString()
-                            shoppingListsList.add(ShoppingList(shoppingListId, shoppingListName))
+                            val shoppingListDetails = _snapshot.value as HashMap<*,*>
+                            shoppingListsList.add(ShoppingList(shoppingListId, shoppingListDetails.get("name").toString(),shoppingListDetails.get("code").toString()))
                             if(++itemsProcessed == snapshot.childrenCount.toInt())
                                 shoppingListsLiveData.value = shoppingListsList
                         }
 
                     })
+
+
+//                    shoppingListsFB.child(shoppingListId).child("name").addListenerForSingleValueEvent(object :ValueEventListener{
+//                        override fun onCancelled(error: DatabaseError) {
+//                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                        }
+//
+//                        override fun onDataChange(_snapshot: DataSnapshot) {
+//                            val shoppingListName =  _snapshot.value.toString()
+//                            shoppingListsList.add(ShoppingList(shoppingListId, shoppingListName))
+//                            if(++itemsProcessed == snapshot.childrenCount.toInt())
+//                                shoppingListsLiveData.value = shoppingListsList
+//                        }
+//
+//                    })
                 }
                 shoppingListsLiveData.value = shoppingListsList
 
@@ -58,6 +72,11 @@ class ShoppingListsDao {
 
         })
     }
+
+    private fun getListDetails(shoppingListId: String){
+
+    }
+
     fun createShoppingList(name: String) {
         val shoppingListRef = shoppingListsFB.push()
         val shoppingListId = shoppingListRef.key
@@ -90,13 +109,10 @@ class ShoppingListsDao {
                 override fun onCancelled(error: DatabaseError) {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
-
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("dawejtam",snapshot.toString())
                     if (snapshot.value != null) {
                         val shoppingListMap = snapshot.value as HashMap<*,*>
                         val shoppingListId = shoppingListMap.keys.first()
-                        Log.d("dawejtu",shoppingListId.toString())
                         if(shoppingListId != null){
                             pushNewListToUserLists(shoppingListId.toString())
                         }

@@ -1,6 +1,7 @@
 package lauks.sebastian.shoppingbuddy.data.products
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
@@ -35,6 +36,7 @@ class ProductsDao {
             override fun onDataChange(snapshot: DataSnapshot) {
                 productsToBuyList.clear()
                 productsInCartList.clear()
+
                 snapshot.children.forEach { productFB: DataSnapshot ->
                     @Suppress("UNCHECKED_CAST")
                     val productFromFB = productFB.value as HashMap<String, *>

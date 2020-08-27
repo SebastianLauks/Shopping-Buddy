@@ -2,6 +2,8 @@ package lauks.sebastian.shoppingbuddy.data.shopping_lists
 
 class ShoppingListsRepository  private constructor(private val shoppingListsDao: ShoppingListsDao){
 
+    fun startListening(userId: String) = shoppingListsDao.startListening(userId)
+
     fun getShoppingLists() = shoppingListsDao.getShoppingLists()
 
     fun removeShoppingList(shoppingList: ShoppingList) = shoppingListsDao.removeShoppingList(shoppingList)

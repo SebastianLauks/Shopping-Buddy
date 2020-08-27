@@ -1,6 +1,7 @@
 package lauks.sebastian.shoppingbuddy.ui.shopping_lists
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,12 +52,14 @@ class ShoppingistsAdapter(
     ) {
         val currenItem = shoppingListsList.value!![position]
         holder.tvShoppingListsName.text = currenItem.name
+        holder.tvCodeContent.text = currenItem.code
 
 
     }
 
     class ShoppingListsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvShoppingListsName: TextView = itemView.tv_shopping_list_name
+        val tvCodeContent: TextView = itemView.tv_code_content
     }
 
 }

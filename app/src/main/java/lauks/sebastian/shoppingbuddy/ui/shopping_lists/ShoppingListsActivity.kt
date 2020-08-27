@@ -17,11 +17,11 @@ import lauks.sebastian.shoppingbuddy.data.shopping_lists.ShoppingList
 import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
 import androidx.core.view.ViewCompat.animate
 import android.R.attr.translationY
+import android.content.Context
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
+import java.util.*
 
 
 class ShoppingListsActivity : AppCompatActivity() {
@@ -30,15 +30,25 @@ class ShoppingListsActivity : AppCompatActivity() {
     lateinit var fab: FloatingActionButton
     lateinit var fabCreate: FloatingActionButton
     lateinit var fabImport: FloatingActionButton
-    private var isFABOpen = false;
+    private var isFABOpen = false
+    private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shopping_lists)
-
+        loadUserId()
         initUi()
     }
 
+
+    private fun loadUserId(){
+        val sharedRef = getPreferences(Context.MODE_PRIVATE)
+        userId= sharedRef.getString(getString(R.string.user_id), "unknown")!!
+        if(userId == "unknown"){
+            userId = UUID.randomUUID().toString()
+            sharedRef.edit().putString(getString(R.string.user_id), userId).apply()
+        }
+    }
 
     private fun initUi(){
         val onShoppingListLongClicked: (name: String) -> Unit = {name ->
@@ -66,6 +76,7 @@ class ShoppingListsActivity : AppCompatActivity() {
         val factory = InjectorUtils.provideShoppingListsViewModelFactory()
         viewModel = ViewModelProvider(this, factory)
             .get(ShoppingListsViewModel::class.java)
+        viewModel.startListening(userId)
 
         shopping_lists_recycler_view.adapter =
             ShoppingistsAdapter(
