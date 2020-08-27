@@ -1,5 +1,6 @@
 package lauks.sebastian.shoppingbuddy.ui.shopping_lists
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,14 +10,27 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_shopping_lists.*
 import lauks.sebastian.shoppingbuddy.R
 import lauks.sebastian.shoppingbuddy.data.shopping_lists.ShoppingList
 import lauks.sebastian.shoppingbuddy.utilities.InjectorUtils
+import androidx.core.view.ViewCompat.animate
+import android.R.attr.translationY
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
+
 
 class ShoppingListsActivity : AppCompatActivity() {
 
     lateinit var viewModel: ShoppingListsViewModel
+    lateinit var fab: FloatingActionButton
+    lateinit var fabCreate: FloatingActionButton
+    lateinit var fabImport: FloatingActionButton
+    private var isFABOpen = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +81,41 @@ class ShoppingListsActivity : AppCompatActivity() {
             (shopping_lists_recycler_view.adapter as ShoppingistsAdapter).notifyDataSetChanged()
         })
 
+        fab = findViewById(R.id.fab)
+        fabCreate = findViewById(R.id.fabCreate)
+        fabImport = findViewById(R.id.fabImport)
+        fab.setOnClickListener {
+            if(!isFABOpen){
+                showFABMenu()
+            }else{
+                closeFABMenu()
+            }
+
+        }
+        fabCreate.setOnClickListener {
+            val intent = Intent(this, CreateShoppingList::class.java)
+            startActivity(intent)
+        }
+
+        fabImport.setOnClickListener {
+            val intent = Intent(this, ImportShoppingList::class.java)
+            startActivity(intent)
+        }
+
     }
+
+    fun showFABMenu() {
+        isFABOpen = true
+        fabCreate.animate().translationY(-resources.getDimension(R.dimen.standard_55))
+        fabImport.animate().translationY(-resources.getDimension(R.dimen.standard_105))
+    }
+
+    fun closeFABMenu() {
+        isFABOpen = false
+        fabCreate.animate().translationY(0f)
+        fabImport.animate().translationY(0f)
+    }
+
 
     fun createCustomDialog(message: String, yes: String, no:String, yesFunction: () -> Unit){
         val builder = AlertDialog.Builder(this)

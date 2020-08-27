@@ -14,4 +14,8 @@ class ShoppingListsViewModel(private val shoppingListsRepository: ShoppingListsR
 
     fun removeShoppingList(shoppingList: ShoppingList) = shoppingListsRepository.removeShoppingList(shoppingList)
 
+    fun createShoppingList(name: String) = shoppingListsRepository.createShoppingList(name)
+
+    fun importShoppingList(code: String) = shoppingListsRepository.importShoppingList(code)
+
 }

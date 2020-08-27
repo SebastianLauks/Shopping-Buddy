@@ -58,7 +58,59 @@ class ShoppingListsDao {
 
         })
     }
+    fun createShoppingList(name: String) {
+        val shoppingListRef = shoppingListsFB.push()
+        val shoppingListId = shoppingListRef.key
+        val shoppingList = ShoppingList(shoppingListId!!, name)
+        shoppingListsFB.child(shoppingListId).setValue(shoppingList)
 
+        pushNewListToUserLists(shoppingListId)
+
+//        userShoppingListsFB.orderByChild("name").equalTo(name)
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onCancelled(error: DatabaseError) {
+//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                }
+//
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    if (snapshot.value == null) {
+//                        val pushedRef = userShoppingListsFB.push()
+//                        val pushedId = pushedRef.key
+//                        val shoppingList = ShoppingList(pushedId!!, name)
+//                        userShoppingListsFB.child(shoppingList.id).setValue(shoppingList)
+//                    }
+//                }
+//
+//            })
+    }
+
+    fun importShoppingList(code: String) {
+        shoppingListsFB.orderByChild("code").equalTo(code)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("dawejtam",snapshot.toString())
+                    if (snapshot.value != null) {
+                        val shoppingListMap = snapshot.value as HashMap<*,*>
+                        val shoppingListId = shoppingListMap.keys.first()
+                        Log.d("dawejtu",shoppingListId.toString())
+                        if(shoppingListId != null){
+                            pushNewListToUserLists(shoppingListId.toString())
+                        }
+                    }
+                }
+
+            })
+    }
+
+    private fun pushNewListToUserLists(shoppingListId: String){
+        val userShoppingListRef = userShoppingListsFB.push()
+        val userShoppingListId = userShoppingListRef.key
+        userShoppingListsFB.child(userShoppingListId!!).setValue(shoppingListId)
+    }
     fun removeShoppingList(shoppingList: ShoppingList){
         userShoppingListsFB.orderByValue().equalTo(shoppingList.id).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
