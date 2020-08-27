@@ -13,7 +13,8 @@ import lauks.sebastian.shoppingbuddy.data.shopping_lists.ShoppingList
 import lauks.sebastian.shoppingbuddy.ui.products.ProductsActivity
 
 class ShoppingistsAdapter(
-    private val shoppingListsList: LiveData<List<ShoppingList>>
+    private val shoppingListsList: LiveData<List<ShoppingList>>,
+    private val onShoppingListLongClicked: (name: String) -> Unit
 ) : RecyclerView.Adapter<ShoppingistsAdapter.ShoppingListsViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -24,6 +25,13 @@ class ShoppingistsAdapter(
             LayoutInflater.from(parent.context).inflate(R.layout.shopping_list_item, parent, false)
         val holder =
             ShoppingListsViewHolder(itemView)
+
+        holder.itemView.setOnLongClickListener {
+            if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+                onShoppingListLongClicked.invoke(shoppingListsList.value!![holder.adapterPosition].name)
+            }
+            false
+        }
 
         holder.itemView.setOnClickListener {
             val context = it.context

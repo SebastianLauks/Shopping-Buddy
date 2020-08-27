@@ -4,6 +4,8 @@
     <string name="text_empty_product">Produkt nie może mieć pustej nazwy.</string>
     <string name="text_product_successfull_remove">Produkt został usunięty.</string>
     <string name="text_product_unsuccessfull_remove">Wystąpił błąd podczas usuwania produktu.</string>
+    <string name="text_shopping_list_successfull_remove">Lista została usunięta.</string>
+    <string name="text_shopping_list_unsuccessfull_remove">Wystąpił błąd podczas usuwania listy.</string>
     <string name="bt_add_new_product">Dodaj</string>
     <string name="text_product_successfull_move_to_cart">Produkt dodany do koszyka.</string>
     <string name="text_product_unsuccessfull_move_to_cart">Wystąpił błąd podczas dodawania produktu do koszyka.</string>

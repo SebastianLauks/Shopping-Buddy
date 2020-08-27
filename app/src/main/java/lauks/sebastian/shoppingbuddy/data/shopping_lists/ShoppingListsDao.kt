@@ -59,5 +59,47 @@ class ShoppingListsDao {
         })
     }
 
+    fun removeShoppingList(shoppingList: ShoppingList){
+        userShoppingListsFB.orderByValue().equalTo(shoppingList.id).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val shoppingListToRemove = snapshot.value as HashMap<*, *>
+                userShoppingListsFB.child(shoppingListToRemove.keys.first().toString()).removeValue()
+            }
+
+        })
+
+//        userShoppingListsFB.addListenerForSingleValueEvent(object : ValueEventListener{
+//            override fun onCancelled(error: DatabaseError) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val shoppingListToRemove = (snapshot.value as Array<*>).find { id -> id == shoppingList.id }
+//                if(shoppingListToRemove != null){
+//                    userShoppingListsFB.
+//                }
+//                Log.d("usuwanie", snapshot.value.toString())
+//            }
+//
+//        })
+
+//        shoppingListProductsInFB.orderByChild("name").equalTo(product.name)
+//            .addListenerForSingleValueEvent(object : ValueEventListener{
+//                override fun onCancelled(error: DatabaseError) {
+//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                }
+//
+//                override fun onDataChange(products: DataSnapshot) {
+//                    val productToRemove = products.value as HashMap<*, *>
+//                    shoppingListProductsInFB.child( productToRemove.keys.first().toString()).removeValue()
+//                }
+//
+//            })
+    }
+
     fun getShoppingLists() = shoppingListsLiveData as LiveData<List<ShoppingList>>
 }

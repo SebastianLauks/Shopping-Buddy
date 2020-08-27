@@ -4,6 +4,8 @@ class ShoppingListsRepository  private constructor(private val shoppingListsDao:
 
     fun getShoppingLists() = shoppingListsDao.getShoppingLists()
 
+    fun removeShoppingList(shoppingList: ShoppingList) = shoppingListsDao.removeShoppingList(shoppingList)
+
 
     companion object {
         @Volatile private var instance: ShoppingListsRepository? = null

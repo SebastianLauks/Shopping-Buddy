@@ -10,16 +10,20 @@ import kotlinx.android.synthetic.main.product_item.view.*
 import lauks.sebastian.shoppingbuddy.R
 import lauks.sebastian.shoppingbuddy.data.products.Product
 
-class ProductsAdapter(private val productsList: LiveData<List<Product>>, private val onProductLongClicked: (name: String) -> Unit): RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>(){
+class ProductsAdapter(
+    private val productsList: LiveData<List<Product>>,
+    private val onProductLongClicked: (name: String) -> Unit
+) : RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.product_item, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.product_item, parent, false)
         val holder =
             ProductsViewHolder(
                 itemView
             )
         holder.itemView.setOnLongClickListener {
-            if(holder.adapterPosition != RecyclerView.NO_POSITION){
+            if (holder.adapterPosition != RecyclerView.NO_POSITION) {
                 onProductLongClicked.invoke(productsList.value!![holder.adapterPosition].name)
             }
             false
@@ -35,7 +39,7 @@ class ProductsAdapter(private val productsList: LiveData<List<Product>>, private
 
     override fun getItemCount() = productsList.value!!.size
 
-    class ProductsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class ProductsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvProductName: TextView = itemView.tv_product_name
     }
 }
